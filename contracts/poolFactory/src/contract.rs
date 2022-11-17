@@ -39,15 +39,9 @@ pub fn instantiate(
 
     // let submsg: SubMsg = SubMsg::new(WasmMsg::Execute { contract_addr: (), msg: (), funds: () } , ReplyOn::Success, REDIRECT_FUNDS_ID);
 
-    // Ok(Response::default())
+    Ok(Response::default())
 
-    Ok(Response::new().add_submessage(SubMsg {
-        // Instantiate Pool
-        msg: BankMsg::Send { to_address: "".to_string(), amount: coins(123, "ujunox") } .into(),
-        gas_limit: None,
-        id: INSTANTIATE_REPLY_ID,
-        reply_on: ReplyOn::Success,
-    }))
+    
 
 }
 

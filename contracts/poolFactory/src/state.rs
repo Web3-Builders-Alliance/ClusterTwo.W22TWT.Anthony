@@ -6,7 +6,7 @@ use cw_storage_plus::{Item, Map, };
 pub const CONFIG: Item<Config> = Item::new("config");
 pub const POOL_COUNT: Item<u64> = Item::new("pool_count");
 
-pub const POOLS: Map<&String, Addr> = Map::new("pools");
+pub const POOLS: Map<u64, Addr> = Map::new("pools");
 
 #[cw_serde]
 pub struct Config {

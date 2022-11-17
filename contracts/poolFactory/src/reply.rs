@@ -6,11 +6,11 @@ use cw_utils::{parse_reply_instantiate_data};
 pub fn handle_instantiate_reply(_deps: DepsMut, msg: Reply) -> StdResult<Response> {
     // Handle the msg data and save the contract address
     // See: https://github.com/CosmWasm/cw-plus/blob/main/packages/utils/src/parse_reply.rs
-    let res = parse_reply_instantiate_data(msg);
-    println!("res: {:?}", res);
+    let res = parse_reply_instantiate_data(msg).unwrap();
 
-    // Save res.contract_address
-    // Ok(Response::new())
+
+    // TODO: Save the contract address in the state in POOLS
+    
 
    
 
@@ -25,7 +25,7 @@ pub fn handle_instantiate_reply(_deps: DepsMut, msg: Reply) -> StdResult<Respons
 
     // CONFIG.save(deps.storage, &config)?;
 
-    Ok(Response::new().add_attribute("whitelist addr", "config.pair_info.liquidity_token"))
+    Ok(Response::new().add_attribute("action","instantiated by factory").add_attribute("contract_addr", res.contract_address))
 }
 
 pub fn handle_transfer_reply(deps: DepsMut, msg: Reply) -> StdResult<Response> {
