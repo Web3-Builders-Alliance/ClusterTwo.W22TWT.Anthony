@@ -1,12 +1,13 @@
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::entry_point;
-use cosmwasm_std::{ to_binary,  Binary, Deps, DepsMut, Env,  MessageInfo, Response, StdError, StdResult, SubMsg, WasmMsg, ReplyOn, Reply, BankMsg, coins,};
+use cosmwasm_std::{ to_binary,  Binary, Deps, DepsMut, Env,  MessageInfo, Response, StdError, StdResult, SubMsgResponse, Reply,};
 use cw2::set_contract_version;
 
 use crate::error::ContractError;
 use crate::execute::{ execute_redirect_funds, execute_create_pool};
+use crate::helpers::unwrap_reply;
 use crate::msg::{  ExecuteMsg,  MigrateMsg,  QueryMsg, InitMsg, };
-use crate::query::query_config;
+use crate::query::{query_config, query_pool};
 use crate::reply::{handle_instantiate_reply, handle_transfer_reply};
 use crate::state::{Config, CONFIG};
 
@@ -14,8 +15,8 @@ use crate::state::{Config, CONFIG};
 const CONTRACT_NAME: &str = "crates.io:cw20-ics20";
 const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
-const INSTANTIATE_REPLY_ID:u64=0;
-const REDIRECT_FUNDS_ID: u64 = 1;
+pub const INSTANTIATE_REPLY_ID:u64=0;
+pub const REDIRECT_FUNDS_ID: u64 = 1;
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
@@ -37,12 +38,7 @@ pub fn instantiate(
     
     CONFIG.save(deps.storage, &cfg)?;
 
-    // let submsg: SubMsg = SubMsg::new(WasmMsg::Execute { contract_addr: (), msg: (), funds: () } , ReplyOn::Success, REDIRECT_FUNDS_ID);
-
     Ok(Response::default())
-
-    
-
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
@@ -70,6 +66,7 @@ pub fn migrate(mut _deps: DepsMut, _env: Env, _msg: MigrateMsg) -> Result<Respon
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
+        QueryMsg::PoolAddress { pool_id } => to_binary(&query_pool(deps, pool_id)?),
         QueryMsg::Config{}=>to_binary(&query_config(deps)?),
         
  }
@@ -78,10 +75,11 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
 
 
 #[cfg_attr(not(feature = "library"), entry_point)]
-pub fn reply(deps: DepsMut, _env: Env, msg: Reply) -> StdResult<Response> {
-    match msg.id {
-        INSTANTIATE_REPLY_ID => handle_instantiate_reply(deps, msg),
-        REDIRECT_FUNDS_ID => handle_transfer_reply(deps, msg),
+pub fn reply(deps: DepsMut, _env: Env, reply: Reply) -> StdResult<Response> {
+    match reply.id {
+        INSTANTIATE_REPLY_ID => handle_instantiate_reply(deps,  reply),
+        REDIRECT_FUNDS_ID => handle_transfer_reply(deps, unwrap_reply(reply).unwrap()),
         id => Err(StdError::generic_err(format!("Unknown reply id: {}", id))),
     }
 }
+

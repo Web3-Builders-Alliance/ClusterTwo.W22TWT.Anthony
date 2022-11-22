@@ -19,6 +19,9 @@ pub enum ContractError {
 
     #[error("Didn't send any funds")]
     NoFunds {},
+
+    #[error("Pool {pool_id} not found")]
+    PoolNotFound {pool_id:u64},
    
     #[error("Got a submessage reply with unknown id: {id}")]
     UnknownReplyId { id: u64 },

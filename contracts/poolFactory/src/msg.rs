@@ -28,7 +28,7 @@ pub enum ExecuteMsg {
 
 #[cw_serde]
 pub enum QueryMsg {
-
+    PoolAddress { pool_id: u64 },
     Config {},
 }
 
