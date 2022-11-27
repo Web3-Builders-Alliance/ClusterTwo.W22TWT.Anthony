@@ -9,7 +9,7 @@ pub const CONFIG: Item<Config> = Item::new("config");
 pub struct Config {
     pub admin: Addr,
     pub title: String,
-    pub pool_id: u64,
+    // pub pool_id: u64,
 }
 
 
