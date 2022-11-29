@@ -21,10 +21,8 @@ pub fn query_config(deps: Deps) -> StdResult<ConfigResponse> {
 
 #[cw_serde]
 pub struct ConfigResponse {
-
     pub admin: String,
     pub pool_code_id: u64,
-    // pub pool_addr: Option<Addr>,
 }
 
 pub fn query_pool(deps: Deps,pool_id:u64) -> StdResult<PoolResponse> {

@@ -5,7 +5,6 @@ use cosmwasm_schema::{cw_serde, QueryResponses};
 pub struct InitMsg {
    pub admin: String,
    pub title: String,
-   pub pool_id: u64,
 }
 
 #[cw_serde]
@@ -29,5 +28,5 @@ pub enum QueryMsg {
 pub struct ConfigResponse {
    pub admin: String,
    pub title: String,
-   pub pool_id: u64,
+//    pub pool_id: u64,
 }

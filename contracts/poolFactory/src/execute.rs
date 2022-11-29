@@ -2,8 +2,6 @@ use cosmwasm_std::{DepsMut, Env, MessageInfo, Response, SubMsg, WasmMsg, to_bina
 
 use crate::{ContractError, state::{CONFIG, next_id, POOLS, CONTRIB}, msg::InitPoolMsg, contract::{REDIRECT_FUNDS_ID, INSTANTIATE_REPLY_ID}};
 
-
-
 // check if pool_id exists and send fund there
 pub fn execute_redirect_funds(
     _deps: DepsMut,
@@ -49,8 +47,6 @@ pub fn execute_create_pool(
 let cfg =CONFIG.load(_deps.storage)?;
 
 let id = next_id(_deps.storage)?;
-// to be done in the reply
-    // POOLS.save(_deps.storage, id, )?;
 
     Ok(Response::new().add_submessage(SubMsg {
         // Instantiate Pool
@@ -60,7 +56,7 @@ let id = next_id(_deps.storage)?;
             msg: to_binary(&InitPoolMsg {
                 admin: cfg.admin.to_string(),
                 title: title.clone(),
-                pool_id: id,
+                // pool_id: id,
                 
             })?,
             funds: vec![],
