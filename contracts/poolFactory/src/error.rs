@@ -38,9 +38,3 @@ impl From<FromUtf8Error> for ContractError {
         ContractError::Std(StdError::invalid_utf8("parsing denom key"))
     }
 }
-
-// impl From<TryFromIntError> for ContractError {
-//     fn from(_: TryFromIntError) -> Self {
-//         ContractError::AmountOverflow {}
-//     }
-// }

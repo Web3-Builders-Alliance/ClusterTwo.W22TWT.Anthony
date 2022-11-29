@@ -22,7 +22,7 @@ pub const REDIRECT_FUNDS_ID: u64 = 1;
 pub fn instantiate(
     deps: DepsMut,
     _env: Env,
-    info: MessageInfo,
+    _info: MessageInfo,
     msg: InitMsg,
 ) -> Result<Response, ContractError> {
     set_contract_version(deps.storage, CONTRACT_NAME, CONTRACT_VERSION)?;
@@ -49,7 +49,6 @@ pub fn execute(
     msg: ExecuteMsg,
 ) -> Result<Response, ContractError> {
     match msg {
-        // shoudlbe in contract_A
         ExecuteMsg::CreatePool {title  } => execute_create_pool(deps, env, info, title),
         ExecuteMsg::RedirectFund { pool_id } => execute_redirect_funds(deps, env, info,pool_id),        
     }
@@ -57,9 +56,6 @@ pub fn execute(
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn migrate(mut _deps: DepsMut, _env: Env, _msg: MigrateMsg) -> Result<Response, ContractError> {
-
-  
-
     Ok(Response::new())
 }
 
@@ -68,11 +64,8 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
         QueryMsg::PoolAddress { pool_id } => to_binary(&query_pool(deps, pool_id)?),
         QueryMsg::Config{}=>to_binary(&query_config(deps)?),
-        
  }
 }
-
-
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn reply(deps: DepsMut, _env: Env, reply: Reply) -> StdResult<Response> {

@@ -12,7 +12,7 @@ pub struct InitMsg {
 pub struct InitPoolMsg {
     pub admin: String,
     pub title: String,
-    pub pool_id: u64,
+    // pub pool_id: u64,
 }
 
 #[cw_serde]
@@ -28,6 +28,7 @@ pub enum ExecuteMsg {
 
 #[cw_serde]
 pub enum QueryMsg {
+    
     PoolAddress { pool_id: u64 },
     Config {},
 }

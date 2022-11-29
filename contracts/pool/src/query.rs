@@ -15,7 +15,6 @@ pub fn query_config(deps: Deps) -> StdResult<ConfigResponse> {
     let res = ConfigResponse {
         admin: cfg.admin.to_string(),   
         title: cfg.title,
-        
     };
     Ok(res)
 }

@@ -23,7 +23,9 @@ pub fn instantiate(
 ) -> Result<Response, ContractError> {
     set_contract_version(_deps.storage, CONTRACT_NAME, CONTRACT_VERSION)?;
     
-    let _cfg = Config {admin:_deps.api.addr_validate(msg.admin.as_str())?, title: msg.title};
+
+    let _cfg = Config {admin:_deps.api.addr_validate(msg.admin.as_str())?, title: msg.title };
+
     
     CONFIG.save(_deps.storage, &_cfg)?;
     Ok(Response::default())
