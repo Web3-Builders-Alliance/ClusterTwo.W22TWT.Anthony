@@ -28,5 +28,4 @@ pub enum QueryMsg {
 pub struct ConfigResponse {
    pub admin: String,
    pub title: String,
-//    pub pool_id: u64,
 }
